@@ -45,8 +45,8 @@ const initEscrow = async () => {
     );
     const vault_authority_pda = _vault_authority_pda;
     // DEBUG BEGIN
-    console.info(initializerMainAccount.publicKey.toBase58());
-    console.info(TOKEN_PROGRAM_ID.toBase58());
+    console.info(`initializerMainAccount: ` + initializerMainAccount.publicKey.toBase58());
+    console.info(`Mint A token program id: ` + mintAAccount.toBase58());
     // DEBUG CONSOLE END
     await program.rpc.initialize(
         vault_account_bump,
