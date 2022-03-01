@@ -6,8 +6,8 @@ import {
     initializerMainAccount, 
     initializerTokenAccountA, 
     initializerTokenAccountB, 
-    mintAAccount, 
-    mintBAccount } from './accounts'
+    mintAPublicKey, 
+    mintBPublicKey } from './accounts'
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet';
 
 const takerAmount = 1000;
@@ -34,19 +34,23 @@ const program = new anchor.Program(idl, programId);
 const initEscrow = async () => {
     const [_vault_account_pda, _vault_account_bump] = await PublicKey.findProgramAddress(
         [Buffer.from(anchor.utils.bytes.utf8.encode("token-seed"))],
-        escrowAccount.publicKey,
+        program.programId,
     );
     const vault_account_pda = _vault_account_pda;
     const vault_account_bump = _vault_account_bump;
 
     const [_vault_authority_pda, _vault_authority_bump] = await PublicKey.findProgramAddress(
         [Buffer.from(anchor.utils.bytes.utf8.encode("escrow"))],
-        escrowAccount.publicKey,
+        program.programId,
     );
-    const vault_authority_pda = _vault_authority_pda;
     // DEBUG BEGIN
-    console.info(`initializerMainAccount: ` + initializerMainAccount.publicKey.toBase58());
-    console.info(`Mint A token program id: ` + mintAAccount.toBase58());
+    // console.info(`initializerMainAccount: ` + JSON.stringify(initializerMainAccount, null, 2));
+    // console.info(`Escrow account: ` + JSON.stringify(escrowAccount));
+    console.info(`Mint A: ` + mintAPublicKey.toBase58());
+    console.info(`Mint B: ` + mintBPublicKey.toBase58());
+    console.info(`TOKEN_PROGRAM_ID: ` + TOKEN_PROGRAM_ID);
+    console.info(`SYSVAR_RENT_PUBKEY: ` + anchor.web3.SYSVAR_RENT_PUBKEY);
+
     // DEBUG CONSOLE END
     await program.rpc.initialize(
         vault_account_bump,
@@ -56,13 +60,13 @@ const initEscrow = async () => {
             accounts: {
                 initializer: initializerMainAccount.publicKey,
                 vaultAccount: vault_account_pda,
-                mint: mintAAccount,
+                mint: mintAPublicKey,
                 initializerDepositTokenAccount: initializerTokenAccountA,
                 initializerReceiveTokenAccount: initializerTokenAccountB,
                 escrowAccount: escrowAccount.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-                tokenProgram: mintAAccount,
+                tokenProgram: TOKEN_PROGRAM_ID,
             },
             instructions: [
                 await program.account.escrowAccount.createInstruction(escrowAccount),

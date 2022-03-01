@@ -9,8 +9,8 @@ import tokenAccountA from "./keypair/tokenA-account.json";
 import tokenAccountB from "./keypair/tokenB-account.json";
 
 const initializerMainAccount = anchor.web3.Keypair.fromSecretKey(new Uint8Array(initializerPrivateKey));
-const mintAAccount = new PublicKey(mintA.publicKey);    
-const mintBAccount = new PublicKey(mintB.publicKey);
+const mintAPublicKey = new PublicKey(mintA.publicKey);    
+const mintBPublicKey = new PublicKey(mintB.publicKey);
 const initializerTokenAccountA = new PublicKey(tokenAccountA.publicKey);
 const initializerTokenAccountB = new PublicKey(tokenAccountB.publicKey);
 const escrowAccount = anchor.web3.Keypair.fromSecretKey(new Uint8Array(escrowPrivateKey));
@@ -20,6 +20,6 @@ export {
     initializerMainAccount,
     initializerTokenAccountA,
     initializerTokenAccountB,
-    mintAAccount,
-    mintBAccount,
+    mintAPublicKey,
+    mintBPublicKey,
 }
