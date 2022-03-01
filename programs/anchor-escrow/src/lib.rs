@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::token::{self, CloseAccount, Mint, SetAuthority, TokenAccount, Transfer};
 use spl_token::instruction::AuthorityType;
 
-declare_id!("6m7hFFRbDoCAN5bTm592crzaXNV3qkYwt6aaEzd1rkg6");
+declare_id!("2yTRYBq58ZMgudQcEp18UnsCBPTUx9a12ZnzZ7N7v9hQ");
 
 #[program]
 pub mod anchor_escrow {
@@ -76,9 +76,10 @@ pub mod anchor_escrow {
             Pubkey::find_program_address(&[ESCROW_PDA_SEED], ctx.program_id);
         let authority_seeds = &[&ESCROW_PDA_SEED[..], &[vault_authority_bump]];
 
+        // TODO: Taker should take 600x tokens from the vault
         token::transfer(
             ctx.accounts.into_transfer_to_initializer_context(),
-            ctx.accounts.escrow_account.taker_amount,
+            ctx.accounts.escrow_account.taker_amount * 600,  
         )?;
 
         token::transfer(

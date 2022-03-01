@@ -5,6 +5,12 @@ import { AnchorEscrow } from '../target/types/anchor_escrow';
 import { PublicKey, SystemProgram, Transaction, Connection, Commitment } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
 import { assert } from "chai";
+import fs from 'fs'
+
+const theMercsPk = fs.readFileSync('./keypair/the_mercenaries-keypair.json');
+const escrowAccountPk = fs.readFileSync('./keypair/ESCgaknPaa24SsGhwJmfnhYKxfDVK8nJBzaSDvJXdQPs.json');
+const initializerAccountPk = fs.readFileSync('./keypair/NTLwqpPxHaep5oPKWiMm9hMLKR2vmpydEb9Bamy2Mxe.json');
+const payerAccountPk = fs.readFileSync('./keypair/PYRj4rspHPSxviZbLnMN6g7tiNodqdFRqfZq95bafgT.json')
 
 describe('anchor-escrow', () => {
   const commitment: Commitment = 'processed';
@@ -33,7 +39,10 @@ describe('anchor-escrow', () => {
   const escrowAccount = anchor.web3.Keypair.generate();
   const payer = anchor.web3.Keypair.generate();
   const mintAuthority = anchor.web3.Keypair.generate();
-  const initializerMainAccount = anchor.web3.Keypair.generate();
+  // create keypair from private key
+  const secret = new Uint8Array(kp)
+  const initializerMainAccount = anchor.web3.Keypair.fromSecretKey(secret)
+  // const initializerMainAccount = anchor.web3.Keypair.fromSecretKey([43,110,238,255,178,168,128,94,236,254,84,51,160,79,193,234,200,30,148,35,0,175,48,4,24,80,198,62,126,79,112,211,207,129,7,147,36,102,113,251,35,13,134,68,250,254,248,56,125,21,211,70,226,212,5,252,233,205,143,8,224,68,215,136]);
   const takerMainAccount = anchor.web3.Keypair.generate();
 
   it("Initialize program state", async () => {
@@ -112,14 +121,16 @@ describe('anchor-escrow', () => {
   it("Initialize escrow", async () => {
     const [_vault_account_pda, _vault_account_bump] = await PublicKey.findProgramAddress(
       [Buffer.from(anchor.utils.bytes.utf8.encode("token-seed"))],
-      program.programId
+      // program.programId
+      new PublicKey("2yTRYBq58ZMgudQcEp18UnsCBPTUx9a12ZnzZ7N7v9hQ")
     );
     vault_account_pda = _vault_account_pda;
     vault_account_bump = _vault_account_bump;
 
     const [_vault_authority_pda, _vault_authority_bump] = await PublicKey.findProgramAddress(
       [Buffer.from(anchor.utils.bytes.utf8.encode("escrow"))],
-      program.programId
+      // program.programId
+      new PublicKey("2yTRYBq58ZMgudQcEp18UnsCBPTUx9a12ZnzZ7N7v9hQ")
     );
     vault_authority_pda = _vault_authority_pda;
 
@@ -131,7 +142,8 @@ describe('anchor-escrow', () => {
         accounts: {
           initializer: initializerMainAccount.publicKey,
           vaultAccount: vault_account_pda,
-          mint: mintA.publicKey,
+          // mint: mintA.publicKey,
+          mint: new PublicKey("DhS6x9pTrfCeY8iwkRdGstxUuphbeHqddT2vZSWRw3d2"),
           initializerDepositTokenAccount: initializerTokenAccountA,
           initializerReceiveTokenAccount: initializerTokenAccountB,
           escrowAccount: escrowAccount.publicKey,
