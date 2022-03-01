@@ -4,7 +4,6 @@ import { PublicKey, SystemProgram, Transaction, Connection, Commitment } from '@
 import escrowPrivateKey from './keypair/anchor_escrow-keypair.json';
 import initializerPrivateKey from './keypair/NTLwqpPxHaep5oPKWiMm9hMLKR2vmpydEb9Bamy2Mxe.json';
 import payerPrivateKey from './keypair/PYRj4rspHPSxviZbLnMN6g7tiNodqdFRqfZq95bafgT.json';
-import theMercsPrivateKey from './keypair/the_mercenaries-keypair.json';
 import mintA from "./keypair/mintA.json";
 import mintB from "./keypair/mintB.json";
 import tokenAccountA from "./keypair/tokenA-account.json";
@@ -24,7 +23,6 @@ export {
     initializerTokenAccountA,
     initializerTokenAccountB,
     payerPrivateKey,
-    theMercsPrivateKey,
     mintAAccount,
     mintBAccount,
 }

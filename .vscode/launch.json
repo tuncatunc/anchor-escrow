@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Example",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "ts-node",
+      "runtimeArgs": ["-r", "ts-node/register/transpile-only"],
+
+      "args": ["init2.ts"],
+      
+      "cwd": "${workspaceRoot}/tests",
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "env": {
+        "ANCHOR_WALLET": "/Users/tuncatunc/git/anchor-escrow/target/deploy/anchor_escrow-keypair.json"        
+      }
+    }
+  ]
+}

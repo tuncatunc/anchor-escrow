@@ -44,7 +44,10 @@ const initEscrow = async () => {
         escrowAccount.publicKey,
     );
     const vault_authority_pda = _vault_authority_pda;
-
+    // DEBUG BEGIN
+    console.info(initializerMainAccount.publicKey.toBase58());
+    console.info(TOKEN_PROGRAM_ID.toBase58());
+    // DEBUG CONSOLE END
     await program.rpc.initialize(
         vault_account_bump,
         new anchor.BN(initializerAmount),
@@ -59,7 +62,7 @@ const initEscrow = async () => {
                 escrowAccount: escrowAccount.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-                tokenProgram: TOKEN_PROGRAM_ID,
+                tokenProgram: mintAAccount,
             },
             instructions: [
                 await program.account.escrowAccount.createInstruction(escrowAccount),
